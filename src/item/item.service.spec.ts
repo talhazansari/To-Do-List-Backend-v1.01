@@ -126,6 +126,7 @@ describe('ItemService', () => {
     it('should update an item', async () => {
       const itemIdToUpdate = 'item-id-to-update';
       const updateItemDto: UpdateItemDto = {
+        _id: itemIdToUpdate,
         description: 'helllo',
         title: 'dasdaads',
         markdown: 'dsadadsa',
@@ -145,13 +146,14 @@ describe('ItemService', () => {
       );
       expect(result).toEqual(updatedItem);
       expect(itemRepository.updateItem).toHaveBeenCalledWith(
-        itemIdToUpdate,
+        updateItemDto._id,,
         updateItemDto,
       );
     });
     it('should throw an error if item update fails', async () => {
       const itemIdToUpdate = 'item-id-to-update';
       const updateItemDto: UpdateItemDto = {
+        _id: itemIdToUpdate,
         description: 'helllo',
         title: 'dasdaads',
         markdown: 'dsadadsa',
@@ -162,7 +164,7 @@ describe('ItemService', () => {
         .spyOn(itemRepository, 'updateItem')
         .mockRejectedValue(new Error(errorMessage));
       await expect(
-        itemService.updateItem(itemIdToUpdate, updateItemDto),
+        itemService.updateItem(updateItemDto._id, updateItemDto),
       ).rejects.toThrowError(errorMessage);
     });
   });
